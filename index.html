@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>勇气阶梯 - 焦虑暴露记录器</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>🧘‍♂️ 勇气阶梯 (Courage Ladder)</h1>
+    </header>
+
+    <main id="login-view" class="main-container">
+        <div class="card">
+            <h2>欢迎</h2>
+            <p>请输入你的专属代号 (Code Name) 来加载或创建你的记录：</p>
+            <input type="text" id="codename-input" placeholder="例如: BlueOcean22">
+            <button id="login-button">登录 / 开始</button>
+        </div>
+    </main>
+
+    <main id="app-view" class="main-container" style="display: none;">
+        
+        <h2 id="welcome-message"></h2>
+
+        <div class="app-layout">
+
+            <div class="main-column">
+                
+                <div class="card ethics">
+                    <h3>⚠️ 重要伦理声明 (必读)</h3>
+                    <p>1. 本工具仅为课程作业，<strong>绝非治疗</strong>。它不能替代专业心理咨询。</p>
+                    <p>2. 如果你的恐惧与严重创伤(PTSD)、强迫症(OCD)相关，请<strong>不要</strong>自行尝试，必须在专业人士指导下进行。</p>
+                    <p>3. <strong>黄金法则:</strong> 练习时必须保持在情境中，直到焦虑<strong>自然下降 50%</strong>。中途逃跑会强化恐惧。</p>
+                </div>
+
+                <div class="card">
+                    <h3>🪜 第一步: 添加新阶梯</h3>
+                    <form id="add-item-form">
+                        <input type="text" id="item-name" placeholder="情境 (例如: 在镜子前演讲)" required>
+                        <button type="submit">添加并评估难度</button>
+                    </form>
+                </div>
+
+                <div class="card">
+                    <h3>🪜 你的勇气阶梯</h3>
+                    <div id="ladder-container">
+                        <p>你的阶梯还是空的...</p>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3>📈 进展分析报告</h3>
+                    <div id="report-container" class="report-box report-default">
+                        <p>当你记录一次练习后...</p>
+                    </div>
+                </div>
+
+            </div> <div class="sidebar-column">
+                <div class="card coping-card">
+                    <h3>📦 应对工具箱</h3>
+                    <p>当你感到焦虑时，尝试完成一项：</p>
+                    
+                    <ul id="coping-toolkit">
+                    </ul>
+
+                    <div id="coping-feedback"></div>
+                </div>
+            </div> </div> </main>
+
+    <dialog id="suds-modal">
+        <form id="suds-form">
+            <h3 id="modal-title">评估焦虑程度</h3>
+            
+            <div class.card" id="suds-guide">
+                <strong>请参考以下“锚点”来打分 (0-10):</strong>
+                <ul>
+                    <li><b>10:</b> 极度恐慌，是我能想象的最糟糕状态。</li>
+                    <li><b>8:</b> 非常强烈的焦虑，很难专注，急切想逃离。</li>
+                    <li><b>5:</b> 中等程度的焦虑，明显的不适感，需刻意镇定。</li>
+                    <li><b>2:</b> 轻微的焦虑，可察觉，但完全可控。</li>
+                    <li><b>0:</b> 绝对的平静，完全没有焦虑。</li>
+                </ul>
+            </div>
+
+            <div id="peak-input-group">
+                <label for="peak-suds">【峰值】焦虑 (0-10):</label>
+                <input type="number" id="peak-suds" min="0" max="10" required>
+            </div>
+            
+            <div id="final-input-group">
+                <label for="final-suds">【结束时】焦虑 (0-10):</label>
+                <input type="number" id="final-suds" min="0" max="10" required>
+            </div>
+
+            <div id="reflection-group">
+                <label for="reflection-text">本次练习的“感悟” (选填):</label>
+                <textarea id="reflection-text" placeholder="例如: “刚开始很难，但5分钟后我发现自己平静下来了...”"></textarea>
+            </div>
+
+            <div class="modal-buttons">
+                <button type="submit" class="button-primary">保存记录</button>
+                <button type="button" id="modal-cancel-button" class="button-secondary">取消</button>
+            </div>
+        </form>
+    </dialog>
+
+    <script src="script.js"></script>
+</body>
+</html>
