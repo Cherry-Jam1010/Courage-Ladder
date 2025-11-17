@@ -8,6 +8,11 @@
     --button-log-hover: #2e7d32;
     --button-secondary: #757575; /* 次要/取消按钮-灰色 */
     --button-secondary-hover: #545454;
+    
+    /* 【【【 新增：删除按钮颜色 】】】 */
+    --button-delete: #d32f2f;     /* 红色 */
+    --button-delete-hover: #b71c1c; /* 深红 */
+
     --text-color: #333;
     --text-light: #555;
     --border-color: #e0e0e0;
@@ -66,7 +71,7 @@ body {
     display: block;
 }
 #app-view {
-    display: none; /* JS 会在登录后改成 'grid' (在 V7 script.js 中) */
+    display: none; /* JS 会在登录后改成 'grid' */
 }
 
 
@@ -161,46 +166,45 @@ button.button-primary:hover,
 
 /* --- 【【【【 阶梯视觉化 - 重大升级 】】】】 --- */
 
-/* 1. 阶梯容器：我们要在这里开始“计数” */
 #ladder-container {
-    counter-reset: ladder-step; /* 创建一个名为 'ladder-step' 的计数器 */
+    counter-reset: ladder-step; 
 }
 
-/* 2. 阶梯项 (踏板) 的基础样式 */
 .ladder-item {
     border: 1px solid var(--border-color);
-    border-left: 5px solid var(--primary-color); /* 左侧有厚厚的彩色边框 */
-    background: var(--card-bg);
+    border-left: 5px solid var(--primary-color); 
+    background: var(--card-bg); /* 默认白色背景 (奇数行) */
     border-radius: 8px;
-    margin-bottom: 15px; /* 阶梯之间的间距 */
+    margin-bottom: 15px; 
     padding: 15px 20px;
     transition: all 0.3s ease;
-    position: relative; /* 用于放置“编号”和“徽章” */
-    overflow: hidden; /* 确保徽章不会溢出 */
+    position: relative; 
+    overflow: hidden; 
 }
 
-/* 3. 阶梯编号 (例如 "1", "2", "3") */
+/* 【【【【【【 新增：颜色对比度 】】】】】】 */
+.ladder-item:nth-child(even) {
+    background: var(--bg-color); /* 偶数行使用页面的浅灰色背景 */
+}
+
 .ladder-item::before {
-    counter-increment: ladder-step; /* 计数器 +1 */
-    content: counter(ladder-step);  /* 显示计数器的数字 */
-    
+    counter-increment: ladder-step; 
+    content: counter(ladder-step);  
     position: absolute;
     left: -15px;
     top: -15px;
-    font-size: 3.5em; /* 巨大的数字 */
+    font-size: 3.5em; 
     font-weight: 700;
-    color: rgba(0, 0, 0, 0.04); /* 非常淡的灰色，作为背景水印 */
+    color: rgba(0, 0, 0, 0.04); 
     z-index: 1;
 }
 
-/* 4. 阶梯项内的所有内容，确保它们在“编号”之上 */
 .ladder-item > * {
     position: relative;
     z-index: 2;
 }
 
 
-/* 5. 阶梯项内部的样式 */
 .item-header {
     display: flex;
     justify-content: space-between;
@@ -218,43 +222,39 @@ button.button-primary:hover,
     font-size: 0.9em;
     color: var(--text-light);
     margin-top: 10px;
-    padding-left: 0; /* 我们不再需要缩进了 */
+    padding-left: 0; 
 }
 
-/* (新) 日志摘要的 P 标签 */
 .item-logs p {
     margin: 5px 0;
     color: var(--text-light);
 }
 
-/* (新) “查看历史”按钮 */
 .view-history-btn {
     background-color: transparent;
     color: var(--primary-color);
-    padding: 4px 0; /* 减小 padding */
+    padding: 4px 0; 
     border-radius: 4px;
     font-size: 14px;
     font-weight: 500;
-    box-shadow: none; /* 移除阴影 */
+    box-shadow: none; 
     margin-top: 5px;
 }
 .view-history-btn:hover {
     background-color: var(--report-default-bg);
-    transform: none; /* 移除上浮 */
+    transform: none; 
 }
 
-/* (新) “日志历史”容器 */
 .logs-history {
-    display: none; /* 默认隐藏 */
+    display: none; 
     margin-top: 15px;
     border-top: 1px dashed var(--border-color);
     padding-top: 10px;
 }
 
-/* (新) 每一条历史记录 */
 .log-entry {
     padding: 10px;
-    background-color: var(--bg-color); /* 浅灰色背景 */
+    background-color: var(--bg-color); 
     border-radius: 5px;
     margin-bottom: 10px;
 }
@@ -265,7 +265,6 @@ button.button-primary:hover,
 .log-entry p {
     margin: 5px 0;
 }
-/* (新) “感悟”的独特样式 */
 p.log-reflection {
     font-style: italic;
     color: var(--primary-hover);
@@ -273,15 +272,17 @@ p.log-reflection {
     border-left: 3px solid var(--primary-color);
 }
 
-
-/* 6. 【【【【 阶梯“已掌握”状态 - 核心视觉 】】】】 */
 .ladder-item.mastered {
-    background-color: var(--report-success-bg); /* 淡淡的绿色背景 */
-    border-color: var(--report-success-border); /* 边框变绿 */
+    background-color: var(--report-success-bg); 
+    border-color: var(--report-success-border); 
     border-left-width: 5px;
 }
 
-/* 7. “已掌握”的徽章 (例如 "✓ 已掌握") */
+/* 【【【【【【 新增：修复偶数行“已掌握”的背景色 】】】】】】 */
+.ladder-item.mastered:nth-child(even) {
+    background-color: var(--report-success-bg); /* 确保偶数行也是绿色 */
+}
+
 .ladder-item.mastered::after {
     content: '✓ 已掌握';
     position: absolute;
@@ -296,16 +297,11 @@ p.log-reflection {
     z-index: 3;
 }
 
-/* --- 【【【【 阶梯视觉化结束 】】】】 --- */
-
-
-/* 伦理和报告样式 */
+/* --- 伦理和报告样式 (V7 版保持不变) --- */
 .ethics {
     background-color: var(--warning-bg);
     border-left: 5px solid var(--warning-border);
 }
-
-/* 【【新】】动态报告卡样式 */
 .report-box {
     padding: 15px;
     border-radius: 8px;
@@ -326,74 +322,85 @@ p.log-reflection {
 }
 
 
-/* 【【【【 全新的“应对工具箱”样式 】】】】 */
-
-.coping-card {
-    background-color: #f8f9fa; /* 浅灰色背景，区别于主卡片 */
+/* --- “AI 助手” 界面样式 (V8 版保持不变) --- */
+.ai-card {
+    background-color: #f8f9fa;
     border: 1px solid var(--border-color);
-    position: sticky; /* 【新】让它在滚动时“粘”在顶部 */
+    position: sticky; 
     top: 20px;
+    z-index: 10; 
 }
-
+.ai-card p {
+    margin-top: 0;
+}
+#ai-form {
+    display: flex;
+    flex-direction: column;
+}
+#ai-form textarea {
+    width: 95%;
+    min-height: 60px;
+    font-family: 'Noto Sans SC', sans-serif;
+    padding: 10px;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    font-size: 14px;
+    line-height: 1.6;
+    margin-top: 5px;
+    transition: all 0.2s ease;
+}
+#ai-form textarea:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(0, 137, 123, 0.2);
+}
+#ai-form button {
+    margin-top: 15px;
+}
+.coping-card {
+    background-color: var(--card-bg); 
+    border: none; 
+}
+#coping-instructions {
+    color: var(--text-light);
+    font-size: 0.9em;
+    transition: all 0.3s ease;
+}
 #coping-toolkit {
     list-style-type: none;
     padding: 0;
     margin: 0;
 }
-
-/* 【【【【 新样式：分类标签 】】】】 */
-.coping-category-label {
-    font-weight: bold;
-    color: var(--primary-color); /* 治愈绿 */
-    margin-top: 15px;
-    margin-bottom: 5px;
-    font-size: 0.9em;
-    text-transform: uppercase; /* 大写 */
-}
-/* 第一个标签不需要上边距 */
-#coping-toolkit li:first-child .coping-category-label {
-    margin-top: 0;
-}
-
 #coping-toolkit li {
     padding: 10px 0;
     display: flex;
     align-items: center;
     border-bottom: 1px solid #eee;
 }
-
 #coping-toolkit li:last-child {
     border-bottom: none;
 }
-
 #coping-toolkit input[type="checkbox"] {
     width: 1.3em;
     height: 1.3em;
     margin-right: 15px;
     cursor: pointer;
 }
-
 #coping-toolkit label {
     color: var(--text-light);
     cursor: pointer;
-    flex: 1; /* 让标签占满剩余空间 */
+    flex: 1; 
 }
-
-/* 【【【【 全新的“及时反馈”样式 】】】】 */
 #coping-feedback {
     margin-top: 20px;
     padding: 10px;
     border-radius: 8px;
     text-align: center;
     font-weight: bold;
-    
-    /* 默认隐藏 */
     opacity: 0;
     transform: translateY(10px);
     transition: all 0.5s ease;
 }
-
-/* 当它被 JS 激活时 */
 #coping-feedback.show {
     opacity: 1;
     transform: translateY(0);
@@ -401,8 +408,6 @@ p.log-reflection {
     color: var(--primary-color);
     border: 1px solid var(--primary-hover);
 }
-
-/* 【【【【 新样式：报告中的“高焦虑建议” 】】】】 */
 .coping-suggestion {
     margin-top: 20px;
     padding: 15px;
@@ -416,7 +421,7 @@ p.log-reflection {
 }
 
 
-/* 【【【 模态框 (Dialog) 样式 】】】 */
+/* --- 模态框样式 (V7 版保持不变) --- */
 dialog {
     border: none;
     border-radius: 12px;
@@ -455,12 +460,9 @@ dialog::backdrop {
     justify-content: flex-end;
     gap: 10px;
 }
-
-/* (新) “感悟”输入框的样式 */
 #reflection-group {
     margin-top: 15px;
 }
-
 #reflection-text {
     width: 95%;
     min-height: 80px;
@@ -477,4 +479,25 @@ dialog::backdrop {
     outline: none;
     border-color: var(--primary-color);
     box-shadow: 0 0 0 3px rgba(0, 137, 123, 0.2);
+}
+
+/* --- 【【【【 新增：删除按钮样式 】】】】 --- */
+
+.item-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px; /* 按钮之间的间距 */
+}
+
+.delete-button {
+    background-color: var(--button-secondary); /* 默认是灰色 */
+    color: white;
+    padding: 8px 12px;
+    font-size: 14px;
+    opacity: 0.6; /* 默认半透明，不抢眼 */
+}
+
+.delete-button:hover {
+    background-color: var(--button-delete); /* 悬停时变红 */
+    opacity: 1;
 }

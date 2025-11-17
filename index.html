@@ -63,9 +63,19 @@
                 </div>
 
             </div> <div class="sidebar-column">
+
+                <div class="card ai-card">
+                    <h3>🤖 智能 AI 助手</h3>
+                    <p>请描述你现在的感受或困扰：</p>
+                    <form id="ai-form">
+                        <textarea id="ai-input" placeholder="例如：“我感觉心跳很快，停不下来...”" required></textarea>
+                        <button type="submit" class="button-primary" id="ai-submit-button">获取 AI 建议</button>
+                    </form>
+                </div>
+
                 <div class="card coping-card">
-                    <h3>📦 应对工具箱</h3>
-                    <p>当你感到焦虑时，尝试完成一项：</p>
+                    <h3>📦 你的 AI 建议</h3>
+                    <p id="coping-instructions">AI 的建议将会“刷新”到这里。</p>
                     
                     <ul id="coping-toolkit">
                     </ul>
