@@ -4,11 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>勇气阶梯 - 焦虑暴露记录器</title>
-    
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;700&display=swap" rel="stylesheet">
-    
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -17,29 +15,42 @@
     </header>
 
     <main id="login-view" class="main-container">
-        <div class="card">
-            <h2>欢迎</h2>
-            <p>请输入你的专属代号 (Code Name) 来加载或创建你的记录：</p>
-            <input type="text" id="codename-input" placeholder="例如: BlueOcean22">
-            <button id="login-button">登录 / 开始</button>
+        <div class="card login-card-box">
+            <h2>欢迎使用勇气阶梯</h2>
+            <p>这款工具将帮助您系统地跟踪和管理您的暴露疗法进度。</p>
+            <input type="text" id="codename-input" placeholder="请输入你的练习代号，例如：勇者一号" required>
+            <button id="login-button" class="button-primary">登录 / 开始</button>
         </div>
     </main>
 
     <main id="app-view" class="main-container" style="display: none;">
         
-        <h2 id="welcome-message"></h2>
+        <h2 id="welcome-message" style="text-align: center; margin-bottom: 10px;"></h2>
+
+        <div class="card ethics compact">
+            <div class="ethics-content">
+                <span class="ethics-icon">⚠️</span>
+                <span class="ethics-text">
+                    <strong>伦理声明：</strong> 本工具仅为课程作业，不可替代专业治疗。
+                    <strong>黄金法则：</strong> 暴露练习时请坚持至焦虑下降 50% 再结束，切勿逃避。
+                </span>
+            </div>
+        </div>
 
         <div class="app-layout">
 
+            <div class="calendar-column">
+                <div class="card calendar-card">
+                    <h3>🗓️ 勇气日历</h3>
+                    <p>记录您添加任务的足迹：</p>
+                    <div id="calendar-container">
+                        </div>
+                    <p class="calendar-legend">🔴 = 点击查看当日任务</p>
+                </div>
+            </div>
+
             <div class="main-column">
                 
-                <div class="card ethics">
-                    <h3>⚠️ 重要伦理声明 (必读)</h3>
-                    <p>1. 本工具仅为课程作业，<strong>绝非治疗</strong>。它不能替代专业心理咨询。</p>
-                    <p>2. 如果你的恐惧与严重创伤(PTSD)、强迫症(OCD)相关，请<strong>不要</strong>自行尝试，必须在专业人士指导下进行。</p>
-                    <p>3. <strong>黄金法则:</strong> 练习时必须保持在情境中，直到焦虑<strong>自然下降 50%</strong>。中途逃跑会强化恐惧。</p>
-                </div>
-
                 <div class="card">
                     <h3>🪜 第一步: 添加新阶梯</h3>
                     <form id="add-item-form">
@@ -58,12 +69,14 @@
                 <div class="card">
                     <h3>📈 进展分析报告</h3>
                     <div id="report-container" class="report-box report-default">
-                        <p>当你记录一次练习后...</p>
+                        <p>当你记录一次练习后，分析报告将显示在这里。</p>
                     </div>
                 </div>
 
-            </div> <div class="sidebar-column">
+            </div>
 
+            <div class="sidebar-column">
+                
                 <div class="card ai-card">
                     <h3>🤖 智能 AI 助手</h3>
                     <p>请描述你现在的感受或困扰：</p>
@@ -78,16 +91,32 @@
                     <p id="coping-instructions">AI 的建议将会“刷新”到这里。</p>
                     
                     <ul id="coping-toolkit">
-                    </ul>
+                        </ul>
 
+                    <div id="satisfaction-panel" class="satisfaction-panel" style="display:none;">
+                        <hr>
+                        <p>❓ 你是否感觉困惑有所缓解？</p>
+                        <div class="modal-buttons justify-content-center">
+                            <button id="solve-yes" class="button-primary" disabled>是，已经解决了！</button>
+                            <button id="solve-no" class="button-secondary" disabled>否，我需要新的建议</button>
+                        </div>
+                    </div>
+                    
                     <div id="coping-feedback"></div>
                 </div>
-            </div> </div> </main>
+
+                <div class="card" style="padding: 15px; text-align: center;">
+                    <button id="show-instructions" class="button-secondary">再次查看使用说明</button>
+                </div>
+
+            </div> 
+
+        </div> 
+    </main>
 
     <dialog id="suds-modal">
         <form id="suds-form">
             <h3 id="modal-title">评估焦虑程度</h3>
-            
             <div class.card" id="suds-guide">
                 <strong>请参考以下“锚点”来打分 (0-10):</strong>
                 <ul>
@@ -119,6 +148,32 @@
                 <button type="button" id="modal-cancel-button" class="button-secondary">取消</button>
             </div>
         </form>
+    </dialog>
+
+    <dialog id="calendar-details-modal" class="mini-modal">
+        <div class="modal-header">
+            <h4 id="calendar-details-date">日期</h4>
+            <button id="close-calendar-details" class="close-icon">×</button>
+        </div>
+        <div class="modal-body">
+            <p style="margin-bottom: 10px; font-size: 0.9em; color: #666;">当天添加了以下恐惧任务：</p>
+            <ul id="calendar-details-list">
+                </ul>
+        </div>
+    </dialog>
+
+    <dialog id="welcome-modal">
+        <h3>👋 欢迎使用：勇气阶梯</h3>
+        <p>把这里当成你的 **“恐惧焦虑日记本”** 吧！</p>
+        <ol>
+            <li>**分解焦虑** 💔 → 🪜：把让你害怕的大目标，拆解成一个个小的“阶梯任务”。</li>
+            <li>**记录和追踪** 📝：完成任务后，记录你的 **“峰值焦虑”** 和 **“结束焦虑”**，追踪每次的进步。</li>
+            <li>**寻求帮助** 🤖：感到焦虑时，向 **AI 助手**描述你的感受，它会给你即时的 **应对技巧**！</li>
+            <li>**日历提醒** 🗓️：点击日历上的 **🔴 红点**，查看你在那天挑战了哪些新恐惧。</li>
+        </ol>
+        <div class="modal-buttons">
+            <button id="close-welcome-button" class="button-primary">我明白了，开始使用</button>
+        </div>
     </dialog>
 
     <script src="script.js"></script>

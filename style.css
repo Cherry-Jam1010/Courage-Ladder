@@ -1,503 +1,131 @@
-/* --- :root 定义了我们全新的“美观”色板 --- */
+/* --- :root 定义 (保持不变) --- */
 :root {
-    --bg-color: #f7f9fc;         /* 极浅的蓝灰色背景 */
-    --card-bg: #ffffff;          /* 卡片背景 */
-    --primary-color: #00897b;    /* 治愈的“薄荷绿” */
-    --primary-hover: #00695c;    /* 悬停加深 */
-    --button-log: #43a047;       /* 记录按钮-绿色 */
-    --button-log-hover: #2e7d32;
-    --button-secondary: #757575; /* 次要/取消按钮-灰色 */
-    --button-secondary-hover: #545454;
-    
-    /* 【【【 新增：删除按钮颜色 】】】 */
-    --button-delete: #d32f2f;     /* 红色 */
-    --button-delete-hover: #b71c1c; /* 深红 */
-
-    --text-color: #333;
-    --text-light: #555;
-    --border-color: #e0e0e0;
-    --shadow-color: rgba(0, 0, 0, 0.08); /* 更柔和的阴影 */
-    --warning-bg: #fffde7;       /* 警告/伦理-背景 */
-    --warning-border: #fbc02d;   /* 警告/伦理-边框 */
-    
-    /* 报告颜色 */
-    --report-default-bg: #f4f4f4;
-    --report-default-border: #ccc;
-    --report-success-bg: #e8f5e9;
-    --report-success-border: #4caf50;
-    --report-warning-bg: #fff8e1;
-    --report-warning-border: #ffc107;
+    --bg-color: #f7f9fc; --card-bg: #ffffff;
+    --primary-color: #00897b; --primary-hover: #00695c;
+    --button-log: #43a047; --button-log-hover: #2e7d32;
+    --button-secondary: #757575; --button-secondary-hover: #545454;
+    --button-delete: #d32f2f; --button-delete-hover: #b71c1c;
+    --calendar-highlight: #d32f2f;
+    --text-color: #333; --text-light: #555; --border-color: #e0e0e0;
+    --shadow-color: rgba(0, 0, 0, 0.08);
+    --warning-bg: #fffde7; --warning-border: #fbc02d;
+    --report-default-bg: #f4f4f4; --report-default-border: #ccc;
+    --report-success-bg: #e8f5e9; --report-success-border: #4caf50;
+    --report-warning-bg: #fff8e1; --report-warning-border: #ffc107;
 }
 
-/* 基本重置和字体 */
-body {
-    font-family: 'Noto Sans SC', sans-serif; /* 【新】使用 Google Font */
-    background-color: var(--bg-color);
-    color: var(--text-color);
-    margin: 0;
+body { font-family: 'Noto Sans SC', sans-serif; background-color: var(--bg-color); color: var(--text-color); margin: 0; padding: 20px; line-height: 1.6; }
+.main-container { width: 90%; max-width: 1400px; margin: 20px auto; display: grid; gap: 25px; }
+.app-layout { display: grid; grid-template-columns: 1.5fr 3.5fr 1.5fr; gap: 25px; }
+#login-view.main-container { display: block; max-width: 800px; }
+#app-view { display: none; }
+
+header { text-align: center; color: white; background: var(--primary-color); padding: 20px 0; border-radius: 12px; box-shadow: 0 4px 15px var(--shadow-color); }
+.card { background: var(--card-bg); border-radius: 12px; box-shadow: 0 4px 15px var(--shadow-color); margin-bottom: 0; padding: 30px; transition: all 0.3s ease; }
+.card:hover { box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1); }
+
+input[type="text"], input[type="number"] { width: 95%; padding: 12px; margin-bottom: 10px; border: 1px solid var(--border-color); border-radius: 8px; font-size: 16px; transition: all 0.2s ease; }
+input[type="text"]:focus, input[type="number"]:focus { outline: none; border-color: var(--primary-color); box-shadow: 0 0 0 3px rgba(0, 137, 123, 0.2); }
+button { border: none; padding: 12px 20px; border-radius: 50px; cursor: pointer; font-size: 16px; font-weight: 700; transition: all 0.3s ease; }
+button:hover { transform: translateY(-2px); box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); }
+button.button-primary, #add-item-form button, #login-button { background-color: var(--primary-color); color: white; }
+button.button-primary:hover, #add-item-form button:hover, #login-button:hover { background-color: var(--primary-hover); }
+.log-button { background-color: var(--button-log); color: white; padding: 8px 16px; font-size: 14px; }
+.log-button:hover { background-color: var(--button-log-hover); }
+.button-secondary { background-color: var(--button-secondary); color: white; }
+.button-secondary:hover { background-color: var(--button-secondary-hover); }
+.delete-button { background-color: var(--button-secondary); color: white; padding: 8px 12px; font-size: 14px; opacity: 0.6; }
+.delete-button:hover { background-color: var(--button-delete); opacity: 1; }
+.item-actions { display: flex; align-items: center; gap: 10px; }
+
+.ethics.compact { background-color: var(--warning-bg); border-left: 5px solid var(--warning-border); border-radius: 8px; padding: 12px 20px; margin-bottom: 25px; color: #5d4037; display: flex; align-items: center; justify-content: center; }
+.ethics-content { display: flex; align-items: center; gap: 15px; text-align: left; max-width: 900px; }
+.ethics-icon { font-size: 1.5em; }
+.ethics-text { font-size: 0.95em; line-height: 1.4; }
+
+.calendar-column, .sidebar-column { position: sticky; top: 20px; align-self: start; display: grid; gap: 25px; }
+.calendar-card { margin-bottom: 0; }
+#calendar-container { display: grid !important; grid-template-columns: repeat(7, 1fr); gap: 5px; margin-top: 15px; text-align: center; box-sizing: border-box; }
+.calendar-day-header { font-size: 0.8em; font-weight: bold; color: var(--text-light); }
+.calendar-date { background-color: var(--bg-color); padding: 8px 0; border-radius: 4px; font-size: 0.9em; font-weight: 500; color: var(--text-color); border: 1px solid var(--border-color); cursor: default; position: relative; }
+.calendar-date.current-month { color: var(--text-color); }
+.calendar-date.other-month { color: var(--border-color); opacity: 0.5; }
+.calendar-date.has-item-added { background-color: var(--calendar-highlight); color: white; font-weight: bold; border-color: var(--calendar-highlight); box-shadow: 0 2px 5px rgba(211, 47, 47, 0.4); cursor: pointer; transition: transform 0.2s; }
+.calendar-date.has-item-added:hover { transform: scale(1.1); }
+.calendar-legend { font-size: 0.9em; color: var(--text-light); margin-top: 15px; border-top: 1px dashed var(--border-color); padding-top: 10px; }
+
+.ai-card { background-color: #f8f9fa; border: 1px solid var(--border-color); position: sticky; top: 20px; z-index: 10; }
+.ai-card p { margin-top: 0; }
+#ai-form { display: flex; flex-direction: column; }
+#ai-form textarea { width: 95%; min-height: 60px; font-family: 'Noto Sans SC', sans-serif; padding: 10px; border: 1px solid var(--border-color); border-radius: 8px; font-size: 14px; line-height: 1.6; margin-top: 5px; transition: all 0.2s ease; }
+#ai-form textarea:focus { outline: none; border-color: var(--primary-color); box-shadow: 0 0 0 3px rgba(0, 137, 123, 0.2); }
+#ai-form button { margin-top: 15px; }
+.coping-card { background-color: var(--card-bg); border: none; }
+#coping-instructions { color: var(--text-light); font-size: 0.9em; transition: all 0.3s ease; }
+#coping-toolkit { list-style-type: none; padding: 0; margin: 0; }
+#coping-toolkit li { padding: 10px 0; display: flex; align-items: center; border-bottom: 1px solid #eee; }
+#coping-toolkit li:last-child { border-bottom: none; }
+#coping-toolkit input[type="checkbox"] { width: 1.3em; height: 1.3em; margin-right: 15px; cursor: pointer; }
+#coping-toolkit label { color: var(--text-light); cursor: pointer; flex: 1; }
+#coping-feedback { margin-top: 20px; padding: 10px; border-radius: 8px; text-align: center; font-weight: bold; opacity: 0; transform: translateY(10px); transition: all 0.5s ease; }
+#coping-feedback.show { opacity: 1; transform: translateY(0); background-color: var(--report-success-bg); color: var(--primary-color); border: 1px solid var(--primary-hover); }
+.coping-suggestion { margin-top: 20px; padding: 15px; background-color: var(--warning-bg); border: 1px solid var(--warning-border); border-radius: 8px; }
+.coping-suggestion p { margin: 0; font-weight: 500; }
+
+#ladder-container { counter-reset: ladder-step; }
+.ladder-item { border: 1px solid var(--border-color); border-left: 5px solid var(--primary-color); background: var(--card-bg); border-radius: 8px; margin-bottom: 15px; padding: 15px 20px; transition: all 0.3s ease; position: relative; overflow: hidden; }
+.ladder-item:nth-child(even) { background: var(--bg-color); }
+.ladder-item::before { counter-increment: ladder-step; content: counter(ladder-step); position: absolute; left: -15px; top: -15px; font-size: 3.5em; font-weight: 700; color: rgba(0, 0, 0, 0.04); z-index: 1; }
+.ladder-item > * { position: relative; z-index: 2; }
+.item-header { display: flex; justify-content: space-between; align-items: center; gap: 15px; }
+.item-header h4 { margin: 0; font-size: 1.2em; color: var(--text-color); word-break: break-word; padding-right: 10px; }
+.item-logs { font-size: 0.9em; color: var(--text-light); margin-top: 10px; padding-left: 0; }
+.item-logs p { margin: 5px 0; color: var(--text-light); }
+.view-history-btn { background-color: transparent; color: var(--primary-color); padding: 4px 0; border-radius: 4px; font-size: 14px; font-weight: 500; box-shadow: none; margin-top: 5px; }
+.view-history-btn:hover { background-color: var(--report-default-bg); transform: none; }
+.logs-history { display: none; margin-top: 15px; border-top: 1px dashed var(--border-color); padding-top: 10px; }
+.log-entry { padding: 10px; background-color: var(--bg-color); border-radius: 5px; margin-bottom: 10px; }
+.log-entry strong { font-size: 0.9em; color: var(--text-light); }
+.log-entry p { margin: 5px 0; }
+p.log-reflection { font-style: italic; color: var(--primary-hover); padding-left: 15px; border-left: 3px solid var(--primary-color); }
+.ladder-item.mastered { background-color: var(--report-success-bg); border-color: var(--report-success-border); border-left-width: 5px; }
+.ladder-item.mastered:nth-child(even) { background-color: var(--report-success-bg); }
+.ladder-item.mastered::after { content: '✓ 已掌握'; position: absolute; top: 10px; right: 15px; font-size: 0.8em; font-weight: 700; color: var(--primary-color); background: rgba(255, 255, 255, 0.7); padding: 3px 8px; border-radius: 50px; z-index: 3; }
+.report-box { padding: 15px; border-radius: 8px; border-left: 5px solid; transition: all 0.3s ease; }
+.report-default { background-color: var(--report-default-bg); border-color: var(--report-default-border); }
+.report-success { background-color: var(--report-success-bg); border-color: var(--report-success-border); }
+.report-warning { background-color: var(--report-warning-bg); border-color: var(--report-warning-border); }
+
+dialog { border: none; border-radius: 12px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2); padding: 30px; width: 90%; max-width: 500px; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); }
+dialog::backdrop { background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(3px); }
+#welcome-modal ol { padding-left: 20px; }
+#welcome-modal li { margin-bottom: 10px; font-size: 1.05em; font-weight: 500; }
+.modal-buttons { margin-top: 25px; display: flex; justify-content: flex-end; gap: 10px; }
+.justify-content-center { justify-content: center; }
+#reflection-group { margin-top: 15px; }
+#reflection-text { width: 95%; min-height: 80px; font-family: 'Noto Sans SC', sans-serif; padding: 10px; border: 1px solid var(--border-color); border-radius: 8px; font-size: 14px; line-height: 1.6; margin-top: 5px; transition: all 0.2s ease; }
+#reflection-text:focus { outline: none; border-color: var(--primary-color); box-shadow: 0 0 0 3px rgba(0, 137, 123, 0.2); }
+#suds-form label { display: block; font-weight: bold; margin-top: 15px; margin-bottom: 5px; }
+#suds-guide { background: #f8f9fa; border-radius: 8px; padding: 15px; font-size: 0.95em; }
+#suds-guide ul { padding-left: 20px; margin: 10px 0 0 0; }
+
+/* 【【【 V21：日历详情弹窗样式修复 】】】 */
+.mini-modal {
+    max-width: 320px;
     padding: 20px;
-    line-height: 1.6;
-}
-
-/* 限制内容最大宽度，使其居中 */
-.main-container {
-    width: 90%; /* 【新】让容器更宽 */
-    max-width: 1200px; /* 【新】最大宽度 */
-    margin: 20px auto; /* 【新】重新居中 */
-    display: grid; 
-    gap: 25px;
-}
-
-/* 【【【【 全新的两栏布局 】】】】 */
-.app-layout {
-    display: grid;
-    grid-template-columns: 2fr 1fr; /* 左侧占 2/3, 右侧占 1/3 */
-    gap: 25px;
-}
-
-/* 确保登录视图不会被 Grid 搞乱 */
-#login-view.main-container {
-    display: block; /* 覆盖 grid */
-    max-width: 800px; /* 登录页保持窄一点 */
-}
-
-/* 确保 app-view 默认是 block, 否则 grid 会失效 */
-#app-view {
-    display: block; /* 覆盖 JS 的 display:none */
-}
-
-/* 在 JS 中, 我们现在切换 .main-container 的隐藏 */
-#login-view {
-    display: block;
-}
-#app-view {
-    display: none; /* JS 会在登录后改成 'grid' */
-}
-
-
-header {
-    text-align: center;
-    color: white;
-    background: var(--primary-color);
-    padding: 20px 0;
-    border-radius: 12px;
-    box-shadow: 0 4px 15px var(--shadow-color);
-}
-
-/* 卡片式布局 */
-.card {
-    background: var(--card-bg);
-    border-radius: 12px; /* 更圆的圆角 */
-    box-shadow: 0 4px 15px var(--shadow-color);
-    margin-bottom: 0; /* Grid 布局会处理间距 */
-    padding: 30px;
-    transition: all 0.3s ease;
-}
-.card:hover {
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
-}
-
-/* 表单和按钮样式 */
-input[type="text"],
-input[type="number"] {
-    width: 95%;
-    padding: 12px;
-    margin-bottom: 10px;
-    border: 1px solid var(--border-color);
-    border-radius: 8px;
-    font-size: 16px;
-    transition: all 0.2s ease;
-}
-input[type="text"]:focus,
-input[type="number"]:focus {
-    outline: none;
-    border-color: var(--primary-color);
-    box-shadow: 0 0 0 3px rgba(0, 137, 123, 0.2);
-}
-
-/* 通用按钮样式 */
-button {
-    border: none;
-    padding: 12px 20px;
-    border-radius: 50px; /* 【新】胶囊按钮 */
-    cursor: pointer;
-    font-size: 16px;
-    font-weight: 700;
-    transition: all 0.3s ease;
-}
-button:hover {
-    transform: translateY(-2px); /* 悬停时轻微上浮 */
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-}
-
-/* 主按钮 */
-button.button-primary,
-#add-item-form button,
-#login-button {
-    background-color: var(--primary-color);
-    color: white;
-}
-button.button-primary:hover,
-#add-item-form button:hover,
-#login-button:hover {
-    background-color: var(--primary-hover);
-}
-
-/* 记录按钮 */
-.log-button {
-    background-color: var(--button-log);
-    color: white;
-    padding: 8px 16px; /* 列表内的按钮小一点 */
-    font-size: 14px;
-}
-.log-button:hover {
-    background-color: var(--button-log-hover);
-}
-
-/* 次要/取消按钮 */
-.button-secondary {
-    background-color: var(--button-secondary);
-    color: white;
-}
-.button-secondary:hover {
-    background-color: var(--button-secondary-hover);
-}
-
-
-/* --- 【【【【 阶梯视觉化 - 重大升级 】】】】 --- */
-
-#ladder-container {
-    counter-reset: ladder-step; 
-}
-
-.ladder-item {
-    border: 1px solid var(--border-color);
-    border-left: 5px solid var(--primary-color); 
-    background: var(--card-bg); /* 默认白色背景 (奇数行) */
-    border-radius: 8px;
-    margin-bottom: 15px; 
-    padding: 15px 20px;
-    transition: all 0.3s ease;
-    position: relative; 
-    overflow: hidden; 
-}
-
-/* 【【【【【【 新增：颜色对比度 】】】】】】 */
-.ladder-item:nth-child(even) {
-    background: var(--bg-color); /* 偶数行使用页面的浅灰色背景 */
-}
-
-.ladder-item::before {
-    counter-increment: ladder-step; 
-    content: counter(ladder-step);  
-    position: absolute;
-    left: -15px;
-    top: -15px;
-    font-size: 3.5em; 
-    font-weight: 700;
-    color: rgba(0, 0, 0, 0.04); 
-    z-index: 1;
-}
-
-.ladder-item > * {
-    position: relative;
-    z-index: 2;
-}
-
-
-.item-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 15px;
-}
-.item-header h4 {
+    position: absolute; /* 允许 JS 动态定位 */
     margin: 0;
-    font-size: 1.2em; 
-    color: var(--text-color);
-    word-break: break-word; 
-    padding-right: 10px;
+    top: auto;
+    left: auto;
+    transform: none; /* 移除默认居中 */
+    z-index: 1000; /* 确保浮在最上面 */
+    background-color: #ffffff;
+    border: 1px solid #ddd;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.15);
 }
-.item-logs {
-    font-size: 0.9em;
-    color: var(--text-light);
-    margin-top: 10px;
-    padding-left: 0; 
-}
-
-.item-logs p {
-    margin: 5px 0;
-    color: var(--text-light);
-}
-
-.view-history-btn {
-    background-color: transparent;
-    color: var(--primary-color);
-    padding: 4px 0; 
-    border-radius: 4px;
-    font-size: 14px;
-    font-weight: 500;
-    box-shadow: none; 
-    margin-top: 5px;
-}
-.view-history-btn:hover {
-    background-color: var(--report-default-bg);
-    transform: none; 
-}
-
-.logs-history {
-    display: none; 
-    margin-top: 15px;
-    border-top: 1px dashed var(--border-color);
-    padding-top: 10px;
-}
-
-.log-entry {
-    padding: 10px;
-    background-color: var(--bg-color); 
-    border-radius: 5px;
-    margin-bottom: 10px;
-}
-.log-entry strong {
-    font-size: 0.9em;
-    color: var(--text-light);
-}
-.log-entry p {
-    margin: 5px 0;
-}
-p.log-reflection {
-    font-style: italic;
-    color: var(--primary-hover);
-    padding-left: 15px;
-    border-left: 3px solid var(--primary-color);
-}
-
-.ladder-item.mastered {
-    background-color: var(--report-success-bg); 
-    border-color: var(--report-success-border); 
-    border-left-width: 5px;
-}
-
-/* 【【【【【【 新增：修复偶数行“已掌握”的背景色 】】】】】】 */
-.ladder-item.mastered:nth-child(even) {
-    background-color: var(--report-success-bg); /* 确保偶数行也是绿色 */
-}
-
-.ladder-item.mastered::after {
-    content: '✓ 已掌握';
-    position: absolute;
-    top: 10px;
-    right: 15px;
-    font-size: 0.8em;
-    font-weight: 700;
-    color: var(--primary-color);
-    background: rgba(255, 255, 255, 0.7);
-    padding: 3px 8px;
-    border-radius: 50px;
-    z-index: 3;
-}
-
-/* --- 伦理和报告样式 (V7 版保持不变) --- */
-.ethics {
-    background-color: var(--warning-bg);
-    border-left: 5px solid var(--warning-border);
-}
-.report-box {
-    padding: 15px;
-    border-radius: 8px;
-    border-left: 5px solid;
-    transition: all 0.3s ease;
-}
-.report-default {
-    background-color: var(--report-default-bg);
-    border-color: var(--report-default-border);
-}
-.report-success {
-    background-color: var(--report-success-bg);
-    border-color: var(--report-success-border);
-}
-.report-warning {
-    background-color: var(--report-warning-bg);
-    border-color: var(--report-warning-border);
-}
-
-
-/* --- “AI 助手” 界面样式 (V8 版保持不变) --- */
-.ai-card {
-    background-color: #f8f9fa;
-    border: 1px solid var(--border-color);
-    position: sticky; 
-    top: 20px;
-    z-index: 10; 
-}
-.ai-card p {
-    margin-top: 0;
-}
-#ai-form {
-    display: flex;
-    flex-direction: column;
-}
-#ai-form textarea {
-    width: 95%;
-    min-height: 60px;
-    font-family: 'Noto Sans SC', sans-serif;
-    padding: 10px;
-    border: 1px solid var(--border-color);
-    border-radius: 8px;
-    font-size: 14px;
-    line-height: 1.6;
-    margin-top: 5px;
-    transition: all 0.2s ease;
-}
-#ai-form textarea:focus {
-    outline: none;
-    border-color: var(--primary-color);
-    box-shadow: 0 0 0 3px rgba(0, 137, 123, 0.2);
-}
-#ai-form button {
-    margin-top: 15px;
-}
-.coping-card {
-    background-color: var(--card-bg); 
-    border: none; 
-}
-#coping-instructions {
-    color: var(--text-light);
-    font-size: 0.9em;
-    transition: all 0.3s ease;
-}
-#coping-toolkit {
-    list-style-type: none;
-    padding: 0;
-    margin: 0;
-}
-#coping-toolkit li {
-    padding: 10px 0;
-    display: flex;
-    align-items: center;
-    border-bottom: 1px solid #eee;
-}
-#coping-toolkit li:last-child {
-    border-bottom: none;
-}
-#coping-toolkit input[type="checkbox"] {
-    width: 1.3em;
-    height: 1.3em;
-    margin-right: 15px;
-    cursor: pointer;
-}
-#coping-toolkit label {
-    color: var(--text-light);
-    cursor: pointer;
-    flex: 1; 
-}
-#coping-feedback {
-    margin-top: 20px;
-    padding: 10px;
-    border-radius: 8px;
-    text-align: center;
-    font-weight: bold;
-    opacity: 0;
-    transform: translateY(10px);
-    transition: all 0.5s ease;
-}
-#coping-feedback.show {
-    opacity: 1;
-    transform: translateY(0);
-    background-color: var(--report-success-bg);
-    color: var(--primary-color);
-    border: 1px solid var(--primary-hover);
-}
-.coping-suggestion {
-    margin-top: 20px;
-    padding: 15px;
-    background-color: var(--warning-bg);
-    border: 1px solid var(--warning-border);
-    border-radius: 8px;
-}
-.coping-suggestion p {
-    margin: 0;
-    font-weight: 500;
-}
-
-
-/* --- 模态框样式 (V7 版保持不变) --- */
-dialog {
-    border: none;
-    border-radius: 12px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-    padding: 30px;
-    width: 90%;
-    max-width: 500px;
-    position: fixed; 
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-}
-dialog::backdrop {
-    background: rgba(0, 0, 0, 0.6);
-    backdrop-filter: blur(3px);
-}
-#suds-form label {
-    display: block;
-    font-weight: bold;
-    margin-top: 15px;
-    margin-bottom: 5px;
-}
-#suds-guide {
-    background: #f8f9fa;
-    border-radius: 8px;
-    padding: 15px;
-    font-size: 0.95em;
-}
-#suds-guide ul {
-    padding-left: 20px;
-    margin: 10px 0 0 0;
-}
-.modal-buttons {
-    margin-top: 25px;
-    display: flex;
-    justify-content: flex-end;
-    gap: 10px;
-}
-#reflection-group {
-    margin-top: 15px;
-}
-#reflection-text {
-    width: 95%;
-    min-height: 80px;
-    font-family: 'Noto Sans SC', sans-serif;
-    padding: 10px;
-    border: 1px solid var(--border-color);
-    border-radius: 8px;
-    font-size: 14px;
-    line-height: 1.6;
-    margin-top: 5px;
-    transition: all 0.2s ease;
-}
-#reflection-text:focus {
-    outline: none;
-    border-color: var(--primary-color);
-    box-shadow: 0 0 0 3px rgba(0, 137, 123, 0.2);
-}
-
-/* --- 【【【【 新增：删除按钮样式 】】】】 --- */
-
-.item-actions {
-    display: flex;
-    align-items: center;
-    gap: 10px; /* 按钮之间的间距 */
-}
-
-.delete-button {
-    background-color: var(--button-secondary); /* 默认是灰色 */
-    color: white;
-    padding: 8px 12px;
-    font-size: 14px;
-    opacity: 0.6; /* 默认半透明，不抢眼 */
-}
-
-.delete-button:hover {
-    background-color: var(--button-delete); /* 悬停时变红 */
-    opacity: 1;
-}
+.modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; border-bottom: 1px solid #eee; padding-bottom: 10px; gap: 10px; }
+.modal-header h4 { margin: 0; color: var(--primary-color); font-size: 1.1em; font-weight: bold; }
+.close-icon { background: none; border: none; font-size: 1.5em; cursor: pointer; color: #999; padding: 0; line-height: 1; }
+.close-icon:hover { color: #333; transform: none; box-shadow: none; }
+#calendar-details-list { list-style-type: disc; padding-left: 20px; margin: 0; }
+#calendar-details-list li { margin-bottom: 5px; color: var(--text-color); font-size: 0.95em; }
