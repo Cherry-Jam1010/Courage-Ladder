@@ -1,4 +1,3 @@
-/* --- :root 定义 (保持不变) --- */
 :root {
     --bg-color: #f7f9fc; --card-bg: #ffffff;
     --primary-color: #00897b; --primary-hover: #00695c;
@@ -12,11 +11,15 @@
     --report-default-bg: #f4f4f4; --report-default-border: #ccc;
     --report-success-bg: #e8f5e9; --report-success-border: #4caf50;
     --report-warning-bg: #fff8e1; --report-warning-border: #ffc107;
+    --ai-comment-color: #0d47a1;
+    --ai-comment-bg: #e3f2fd;
+    --ai-comment-border: #2196f3;
 }
 
 body { font-family: 'Noto Sans SC', sans-serif; background-color: var(--bg-color); color: var(--text-color); margin: 0; padding: 20px; line-height: 1.6; }
 .main-container { width: 90%; max-width: 1400px; margin: 20px auto; display: grid; gap: 25px; }
-.app-layout { display: grid; grid-template-columns: 1.5fr 3.5fr 1.5fr; gap: 25px; }
+/* 最终比例 */
+.app-layout { display: grid; grid-template-columns: 1.5fr 3.5fr 1.5fr; gap: 25px; } 
 #login-view.main-container { display: block; max-width: 800px; }
 #app-view { display: none; }
 
@@ -24,8 +27,7 @@ header { text-align: center; color: white; background: var(--primary-color); pad
 .card { background: var(--card-bg); border-radius: 12px; box-shadow: 0 4px 15px var(--shadow-color); margin-bottom: 0; padding: 30px; transition: all 0.3s ease; }
 .card:hover { box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1); }
 
-input[type="text"], input[type="number"] { width: 95%; padding: 12px; margin-bottom: 10px; border: 1px solid var(--border-color); border-radius: 8px; font-size: 16px; transition: all 0.2s ease; }
-input[type="text"]:focus, input[type="number"]:focus { outline: none; border-color: var(--primary-color); box-shadow: 0 0 0 3px rgba(0, 137, 123, 0.2); }
+/* 按钮样式 */
 button { border: none; padding: 12px 20px; border-radius: 50px; cursor: pointer; font-size: 16px; font-weight: 700; transition: all 0.3s ease; }
 button:hover { transform: translateY(-2px); box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); }
 button.button-primary, #add-item-form button, #login-button { background-color: var(--primary-color); color: white; }
@@ -38,23 +40,56 @@ button.button-primary:hover, #add-item-form button:hover, #login-button:hover { 
 .delete-button:hover { background-color: var(--button-delete); opacity: 1; }
 .item-actions { display: flex; align-items: center; gap: 10px; }
 
+/* 通用“胶囊形”文本输入框样式，可复用到登录与添加阶梯 */
+.text-input-pill {
+    display: inline-block;
+    width: 360px; /* 与按钮并排时的合理宽度 */
+    max-width: 100%;
+    padding: 12px 16px; /* 与按钮高度一致 */
+    border: 1px solid var(--border-color);
+    border-radius: 50px; /* 视觉上与按钮保持一致 */
+    font-size: 16px;
+    line-height: 1.2;
+    box-sizing: border-box;
+    vertical-align: middle;
+    margin-right: 12px;
+}
+.text-input-pill:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(0, 137, 123, 0.15);
+}
+.text-input-pill::placeholder {
+    color: #9e9e9e;
+    font-size: 14px;
+}
+#login-button { vertical-align: middle; }
+
+/* 小屏优化：堆叠布局，避免拥挤 */
+@media (max-width: 600px) {
+    #codename-input { width: 100%; margin-right: 0; margin-bottom: 12px; }
+    #login-button { width: 100%; border-radius: 12px; }
+}
+
+/* 伦理声明 (已修复间距) */
 .ethics.compact { background-color: var(--warning-bg); border-left: 5px solid var(--warning-border); border-radius: 8px; padding: 12px 20px; margin-bottom: 25px; color: #5d4037; display: flex; align-items: center; justify-content: center; }
 .ethics-content { display: flex; align-items: center; gap: 15px; text-align: left; max-width: 900px; }
 .ethics-icon { font-size: 1.5em; }
 .ethics-text { font-size: 0.95em; line-height: 1.4; }
 
+/* 侧边栏容器 (保持粘性) */
 .calendar-column, .sidebar-column { position: sticky; top: 20px; align-self: start; display: grid; gap: 25px; }
-.calendar-card { margin-bottom: 0; }
+
+/* 日历样式 */
 #calendar-container { display: grid !important; grid-template-columns: repeat(7, 1fr); gap: 5px; margin-top: 15px; text-align: center; box-sizing: border-box; }
 .calendar-day-header { font-size: 0.8em; font-weight: bold; color: var(--text-light); }
 .calendar-date { background-color: var(--bg-color); padding: 8px 0; border-radius: 4px; font-size: 0.9em; font-weight: 500; color: var(--text-color); border: 1px solid var(--border-color); cursor: default; position: relative; }
-.calendar-date.current-month { color: var(--text-color); }
-.calendar-date.other-month { color: var(--border-color); opacity: 0.5; }
 .calendar-date.has-item-added { background-color: var(--calendar-highlight); color: white; font-weight: bold; border-color: var(--calendar-highlight); box-shadow: 0 2px 5px rgba(211, 47, 47, 0.4); cursor: pointer; transition: transform 0.2s; }
 .calendar-date.has-item-added:hover { transform: scale(1.1); }
 .calendar-legend { font-size: 0.9em; color: var(--text-light); margin-top: 15px; border-top: 1px dashed var(--border-color); padding-top: 10px; }
 
-.ai-card { background-color: #f8f9fa; border: 1px solid var(--border-color); position: sticky; top: 20px; z-index: 10; }
+/* AI 助手 */
+.ai-card { background-color: #f8f9fa; border: 1px solid var(--border-color); position: static; z-index: auto; }
 .ai-card p { margin-top: 0; }
 #ai-form { display: flex; flex-direction: column; }
 #ai-form textarea { width: 95%; min-height: 60px; font-family: 'Noto Sans SC', sans-serif; padding: 10px; border: 1px solid var(--border-color); border-radius: 8px; font-size: 14px; line-height: 1.6; margin-top: 5px; transition: all 0.2s ease; }
@@ -72,6 +107,14 @@ button.button-primary:hover, #add-item-form button:hover, #login-button:hover { 
 .coping-suggestion { margin-top: 20px; padding: 15px; background-color: var(--warning-bg); border: 1px solid var(--warning-border); border-radius: 8px; }
 .coping-suggestion p { margin: 0; font-weight: 500; }
 
+/* 建议理由与详解面板 */
+.suggestion-details { margin-top: 12px; padding: 12px; background-color: var(--bg-color); border: 1px dashed var(--border-color); border-radius: 8px; }
+.detail-entry { margin-bottom: 10px; }
+.detail-entry:last-child { margin-bottom: 0; }
+.detail-entry strong { color: var(--text-color); font-size: 0.95em; }
+.detail-entry p { margin: 5px 0; color: var(--text-light); font-size: 0.9em; }
+
+/* 阶梯视觉化 */
 #ladder-container { counter-reset: ladder-step; }
 .ladder-item { border: 1px solid var(--border-color); border-left: 5px solid var(--primary-color); background: var(--card-bg); border-radius: 8px; margin-bottom: 15px; padding: 15px 20px; transition: all 0.3s ease; position: relative; overflow: hidden; }
 .ladder-item:nth-child(even) { background: var(--bg-color); }
@@ -96,36 +139,27 @@ p.log-reflection { font-style: italic; color: var(--primary-hover); padding-left
 .report-success { background-color: var(--report-success-bg); border-color: var(--report-success-border); }
 .report-warning { background-color: var(--report-warning-bg); border-color: var(--report-warning-border); }
 
+/* 模态框通用 */
 dialog { border: none; border-radius: 12px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2); padding: 30px; width: 90%; max-width: 500px; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); }
 dialog::backdrop { background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(3px); }
 #welcome-modal ol { padding-left: 20px; }
 #welcome-modal li { margin-bottom: 10px; font-size: 1.05em; font-weight: 500; }
 .modal-buttons { margin-top: 25px; display: flex; justify-content: flex-end; gap: 10px; }
 .justify-content-center { justify-content: center; }
-#reflection-group { margin-top: 15px; }
-#reflection-text { width: 95%; min-height: 80px; font-family: 'Noto Sans SC', sans-serif; padding: 10px; border: 1px solid var(--border-color); border-radius: 8px; font-size: 14px; line-height: 1.6; margin-top: 5px; transition: all 0.2s ease; }
-#reflection-text:focus { outline: none; border-color: var(--primary-color); box-shadow: 0 0 0 3px rgba(0, 137, 123, 0.2); }
-#suds-form label { display: block; font-weight: bold; margin-top: 15px; margin-bottom: 5px; }
-#suds-guide { background: #f8f9fa; border-radius: 8px; padding: 15px; font-size: 0.95em; }
-#suds-guide ul { padding-left: 20px; margin: 10px 0 0 0; }
 
-/* 【【【 V21：日历详情弹窗样式修复 】】】 */
-.mini-modal {
-    max-width: 320px;
-    padding: 20px;
-    position: absolute; /* 允许 JS 动态定位 */
-    margin: 0;
-    top: auto;
-    left: auto;
-    transform: none; /* 移除默认居中 */
-    z-index: 1000; /* 确保浮在最上面 */
-    background-color: #ffffff;
-    border: 1px solid #ddd;
-    box-shadow: 0 5px 20px rgba(0,0,0,0.15);
-}
+/* 迷你弹窗 (日历) */
+.mini-modal { max-width: 320px; padding: 15px; position: absolute; margin: 0; top: auto; left: auto; transform: none; z-index: 1000; background-color: #ffffff; border: 1px solid #ddd; box-shadow: 0 5px 20px rgba(0,0,0,0.15); }
 .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; border-bottom: 1px solid #eee; padding-bottom: 10px; gap: 10px; }
 .modal-header h4 { margin: 0; color: var(--primary-color); font-size: 1.1em; font-weight: bold; }
 .close-icon { background: none; border: none; font-size: 1.5em; cursor: pointer; color: #999; padding: 0; line-height: 1; }
 .close-icon:hover { color: #333; transform: none; box-shadow: none; }
 #calendar-details-list { list-style-type: disc; padding-left: 20px; margin: 0; }
 #calendar-details-list li { margin-bottom: 5px; color: var(--text-color); font-size: 0.95em; }
+
+/* 弹窗和输入框内部样式 */
+#reflection-group { margin-top: 15px; }
+#reflection-text { width: 95%; min-height: 80px; font-family: 'Noto Sans SC', sans-serif; padding: 10px; border: 1px solid var(--border-color); border-radius: 8px; font-size: 14px; line-height: 1.6; margin-top: 5px; transition: all 0.2s ease; }
+#reflection-text:focus { outline: none; border-color: var(--primary-color); box-shadow: 0 0 0 3px rgba(0, 137, 123, 0.2); }
+#suds-form label { display: block; font-weight: bold; margin-top: 15px; margin-bottom: 5px; }
+#suds-guide { background: #f8f9fa; border-radius: 8px; padding: 15px; font-size: 0.95em; }
+#suds-guide ul { padding-left: 20px; margin: 10px 0 0 0; }
